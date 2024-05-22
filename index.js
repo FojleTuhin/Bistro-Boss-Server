@@ -33,6 +33,7 @@ async function run() {
 
         const menuCollection = client.db('Bistro-Boss').collection('Menu');
         const reviewsCollection = client.db('Bistro-Boss').collection('Reviews');
+        const cartCollection = client.db('Bistro-Boss').collection('Cart');
 
 
         app.get('/menu', async(req, res)=>{
@@ -43,6 +44,21 @@ async function run() {
         app.get('/reviews', async(req, res)=>{
             const result= await reviewsCollection.find().toArray();
             res.send(result)
+        })
+
+        app.get('/getFromCart', async(req, res)=>{
+            const email = req.query.email;
+            const query = {email: email}
+            const result= await cartCollection.find(query).toArray();
+            res.send(result)
+        })
+
+
+        app.post ('/addToCart',async(req, res)=>{
+            const cartItem = req.body;
+            const result = await cartCollection. insertOne(cartItem);
+            res.send(result);
+
         })
 
 
